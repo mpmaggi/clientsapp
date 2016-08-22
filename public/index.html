@@ -1,0 +1,176 @@
+<!DOCTYPE>
+<html ng-app="clientsApp">
+
+<head>
+    <title>MTD Clients App</title>
+</head>
+
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+
+<body>
+    <h1 class="md-display-3">Clients List</h1>
+
+    <div class="conteudo" ng-controller="ClientsListCtrl">
+        <md-button class="md-fab" aria-label="Add new client" ng-click="addNewClient()">
+            <md-icon md-svg-src="svg/add.svg"></md-icon>
+        </md-button>
+        <md-button class="md-primary">Click me</md-button>
+        <md-button class="md-accent">or maybe me</md-button>
+        <md-button class="md-warn">Careful</md-button>
+        <table class="responsive-table">
+            <tr>
+                <thead>
+                    <th>CPF</th>
+                    <th>Name</th>
+                    <th>E-mail</th>
+                    <th>Marital Status</th>
+                    <th>Address</th>
+                    <th>Phone Numbers</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="client in clientList">
+                        <td>{{client.cpf}}</td>
+                        <td>{{client.name}}</td>
+                        <td>{{client.email}}</td>
+                        <td>{{client.maritalstatus}}</td>
+                        <td>{{client.address}}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </tr>
+        </table>
+
+        <div id="registerForm" ng-show="exibirForm" class="oculta">
+            <md-dialog-content>
+
+
+                <form name="clientForm"></form>
+
+                <md-input-container>
+
+                    <label>CPF</label>
+                    <input ng-model="client.cpf" name="cpf" required md-maxlength=11 md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error">
+                        <div ng-message="required" ng-show="userForm.lastName.$dirty">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>Name</label>
+                    <input ng-model="client.name" name="name" required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error">
+                        <div ng-message="required" ng-show="userForm.lastName.$dirty">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>E-mail</label>
+                    <input ng-model="client.email" name="email" required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error">
+                        <div ng-message="required" ng-show="userForm.lastName.$dirty">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>Marital Status</label>
+                    <md-select ng-model="client.maritalstatus" name="maritalstatus" required md-no-asterisk>
+                        <md-option ng-value="item " ng-repeat="item in maritalstatuses " value="{{item.id}}">{{ item.value }}</md-option>
+                    </md-select>
+                    <div ng-messages="clientForm.favoriteColor.$error ">
+                        <div ng-message="required " ng-show="userForm.lastName.$dirty ">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>Zipcode</label>
+                    <input ng-model="client.zipcode " name="zipcode " required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error ">
+                        <div ng-message="required " ng-show="userForm.lastName.$dirty ">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>Address Line 1</label>
+                    <input ng-model="client.address1 " name="address1 " required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error ">
+                        <div ng-message="required " ng-show="userForm.lastName.$dirty ">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>Address Line 2</label>
+                    <input ng-model="client.address2 " name="address2 " required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error ">
+                        <div ng-message="required " ng-show="userForm.lastName.$dirty ">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>City</label>
+                    <input ng-model="client.city " name="city " required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error ">
+                        <div ng-message="required " ng-show="userForm.lastName.$dirty ">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>State</label>
+                    <input ng-model="client.state " name="state " required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error ">
+                        <div ng-message="required " ng-show="userForm.lastName.$dirty ">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>Country</label>
+                    <input ng-model="client.country " name="country " required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error ">
+                        <div ng-message="required " ng-show="userForm.lastName.$dirty ">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+                <md-input-container>
+
+                    <label>Phone number</label>
+                    <input ng-model="client.phonenumber " name="phonenumber " required md-no-asterisk />
+                    <div ng-messages="clientForm.favoriteColor.$error ">
+                        <div ng-message="required " ng-show="userForm.lastName.$dirty ">This field is mandatory!</div>
+                    </div>
+
+                </md-input-container>
+
+                <md-button ng-click="submitForm() ">Submit!</md-button>
+                </form>
+
+
+
+        </div>
+
+
+
+    </div>
+</body>
+
+<script src="js/angular.min.js "></script>
+
+<!-- Angular Material requires Angular.js Libraries -->
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js "></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js "></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js "></script>
+
+<!-- Angular Material Library -->
+<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js "></script>
+
+<script src="controllers/controller.js "></script>
+
+</html>
