@@ -1,4 +1,4 @@
-var clientsApp = angular.module('clientsApp', ['ngMaterial', 'ngMessages', 'ngAnimate'])
+var clientsApp = angular.module('clientsApp', ['ngMaterial', 'ngAnimate'])
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('blue-grey')
@@ -11,7 +11,6 @@ function ($scope, $http) {
 
         $http.get('/clients').success(function (response) {
             $scope.clientList = response;
-
         });
 
         $scope.maritalstatuses = [
@@ -37,14 +36,23 @@ function ($scope, $http) {
         }
 
         $scope.exibirForm = false;
+        $scope.textoBotao = "+";
 
 
         $scope.addNewClient = function () {
-            $scope.exibirForm = true;
+            $scope.exibirForm = !$scope.exibirForm;
+            $scope.textoBotao = $scope.exibirForm ? "-" : "+";
         }
 
         $scope.submitForm = function () {
             console.log("clicou submit");
             $http.post('/clients', $scope.client);
+
+            $scope.exibirForm = false;
+            $http.get('/clients').success(function (response) {
+                $scope.clientList = response;
+                addNewClient();
+            });
+
         }
 }]);

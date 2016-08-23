@@ -1,75 +1,106 @@
+var assert = require('assert');
 var express = require('express');
 var app = express();
-var mongoose = require('mongoose');
-
-
 var bodyParser = require('body-parser');
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 
-mongoose.Promise = global.Promise;
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+var url = 'mongodb://localhost:27017/client';
 
-var clientSchema = mongoose.Schema({
-    cpf: String,
-    name: String,
-    email: String,
-    // maritalstatus: String,
-    zipcode: String,
-    address1: String,
-    address2: String,
-    city: String,
-    state: String,
-    country: String,
-    phonenumber: String
-});
+/*
+var findClients = function (db, callback) {
+    var cursor = db.collection('clients').find();
+    var arr = [];
+    cursor.each(function (err, doc) {
+        assert.equal(err, null);
+        if (doc != null) {
+            //console.dir(doc);
+            arr.push(doc);
+        } else {
+            callback();
+        }
+    });
+    return arr;
+};
 
-var ClientDB = mongoose.model('client', clientSchema);
-
+*/
 app.get('/clients', function (req, res) {
     console.log("GET REQUEST");
 
-    client1 = {
-        cpf: '000000001-91',
-        name: 'João',
-        email: 'joao@teste.com',
-        maritalstatus: 'single',
-        address: 'Rua Macapá 141/201'
-    }
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        /*findClients(db, function () {
+            db.close();
+        });*/
 
-    client2 = {
-        cpf: '000000002-92',
-        name: 'Mary',
-        email: 'mary@teste.com',
-        maritalstatus: 'married',
-        address: 'Rua Mogi 875'
-    }
+        var propArray = [];
+        db.collection('clients').find().toArray(function (err, result) {
+            var i, count;
+            for (i = 0, count = result.length; i < count; i++) {
+                //propArray.push(new models.propertyModel(result[i]));
+                propArray.push(result[i]);
+            }
+            db.close();
+            return res.json(propArray);
+        });
 
-    var clients = [client1, client2];
-    res.json(clients);
+
+    });
+    /*
+
+        client1 = {
+            cpf: '000000001-91',
+            name: 'João',
+            email: 'joao@teste.com',
+            maritalstatus: 'single',
+            address: 'Rua Macapá 141/201'
+        }
+
+        client2 = {
+            cpf: '000000002-92',
+            name: 'Mary',
+            email: 'mary@teste.com',
+            maritalstatus: 'married',
+            address: 'Rua Mogi 875'
+        }
+
+        var clients = [client1, client2];
+        res.json(clients);
+        */
+
 
 });
 
 app.post('/clients', function (req, res) {
-    mongoose.connect('mongodb://localhost/client');
-
-    var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function () {
-        var newClient = new ClientDB(req.body);
 
 
-        mongoose.Promise = require('bluebird');
-        newClient.save(function (err) {
-            if (err) throw err;
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            console.log('Não foi possível conectar ao mongoDB');
+        } else {
+            console.log('Conexão realizada em ', url);
+        }
 
-            console.log('User saved successfully!');
+
+        var collection = db.collection('clients');
+        collection.insert([req.body], function (err, result) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+            }
+            db.close();
         });
 
 
     });
 
+
 });
 
-app.listen(3000);
-console.log("Server running on port 3000");
+app.listen(3000, function () {
+    console.log("Server running on port 3000");
+});
