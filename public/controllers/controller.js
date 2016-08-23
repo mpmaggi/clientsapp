@@ -37,6 +37,15 @@ function ($scope, $http) {
 
         $scope.exibirForm = false;
         $scope.textoBotao = "+";
+        $scope.client.phonenumber = [{id: 'phone1'}];
+        
+        $scope.addPhone = function() {
+			$scope.client.phonenumber.push({'id':'phone' + $scope.client.phonenumber.length+1});
+		  };
+			
+		  $scope.removePhone = function(item) {
+			$scope.client.phonenumber.splice(item,1);
+		  };
 
 
         $scope.addNewClient = function () {
