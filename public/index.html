@@ -48,7 +48,7 @@
 
         <div id="registerForm" ng-show="exibirForm" class="oculta" layout="column">
 
-            <form name="clientForm">
+            <form name="clientForm" ng-show="exibirForm" class="oculta" layout="column">
                 <div layout="row">
                     <div flex>
                         <md-input-container>
@@ -136,15 +136,18 @@
                 </div>
 
 
-                <div flex>
+                <div layout="row">
+                <div flex ng-repeat="phone in client.phonenumber">
                     <md-input-container>
-                        <label>Phone number</label>
-                        <input ng-model="client.phonenumber" name="phonenumber " required md-no-asterisk />
+                        <label>Phone number #{{$index+1}}</label>
+                        <input type="text" ng-model="phone.name" name="" required md-no-asterisk />
+						<md-button ng-show="!$first" class="md-icon-button md-accent md-mini" type="button" ng-click=removePhone()>-</md-button>
                     </md-input-container>
+					<md-button class="md-icon-button md-accent md-mini" type="button" ng-click=addPhone($event)>
+						+
+					  </md-button>
                 </div>
-                <div layout="row" flex layout-align="end center">
-                    <md-button class="md-raised" ng-click="submitForm() ">Submit Form!</md-button>
-                </div>
+				</div>
 
             </form>
 
