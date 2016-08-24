@@ -9,89 +9,110 @@
         }
         
         #registerForm {
-            width: 1000px;
+            width: 80%;
             margin: auto;
         }
 
     </style>
 </head>
 
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" />
+<link rel="stylesheet" href="scripts/angular-material-data-table/dist/md-data-table.min.css" />
 
-<body layout="column">
-    <h1 class="md-display-3">Clients List</h1>
+<body layout="column " ng-controller="ClientsListCtrl ">
+    <md-content>
+        <md-toolbar class="md-primary">
+            <div layout="row">
+                <div flex="90">
+                    <h2 class="md-toolbar-tools">
+            Clients
+            </h2>
+                </div>
+                <div flex="10">
+                    <md-button class="md-fab md-accent" aria-label="Add new client " ng-click="addNewClient() ">{{textoBotao}}
+                    </md-button>
+                </div>
+            </div>
+        </md-toolbar>
+    </md-content>
 
-    <div class="conteudo" ng-controller="ClientsListCtrl">
-        <md-button class="md-fab" aria-label="Add new client" ng-click="addNewClient()">{{textoBotao}}
-        </md-button>
+    <div class="conteudo ">
 
-        <table ng-hide="exibirForm">
-            <tr>
-                <thead>
-                    <th>CPF</th>
-                    <th>Name</th>
-                    <th>E-mail</th>
-                    <th>Marital Status</th>
-                    <th>Actions</th>
+        <md-table-container ng-hide="exibirForm ">
+            <table md-table>
+                <thead md-head>
+                    <tr md-row>
+                        <th md-column><span>CPF</span></th>
+                        <th md-column md-order-by="client.name.value"><span>Name</span></th>
+                        <th md-column>E-mail</th>
+                        <th md-column>Marital Status</th>
+                        <th md-column>Actions</th>
+                    </tr>
                 </thead>
-                <tbody>
-                    <tr ng-repeat="client in clientList">
-                        <td>{{client.cpf}}</td>
-                        <td>{{client.name}}</td>
-                        <td>{{client.email}}</td>
-                        <td></td>
+                <tbody md-body>
+                    <tr md-row md-select="client" md-select-id="name" md-auto-select ng-repeat="client in clientList ">
+                        <td md-cell>{{client.cpf}}</td>
+                        <td md-cell>{{client.name}}</td>
+                        <td md-cell>{{client.email}}</td>
+                        <td md-cell>{{client.maritalstatus}}</td>
+                        <td md-cell>
+                            <md-button type="button " class="md-raised md-primary " ng-click="edit(client._id)">Edit</md-button>
+                            <md-button type="button " class="md-raised md-warn " ng-click="remove(client._id)">Remove</md-button>
+                        </td>
                     </tr>
                 </tbody>
-            </tr>
-        </table>
+            </table>
+        </md-table-container>
 
-        <div id="registerForm" ng-show="exibirForm" class="oculta" layout="column">
+        <div id="registerForm " ng-show="exibirForm " class="oculta " layout="column ">
 
-            <form name="clientForm" ng-show="exibirForm" class="oculta" layout="column">
-                <div layout="row">
+            <form name="clientForm " ng-show="exibirForm " class="oculta " layout="column " ng-submit="clientForm.$valid">
+                <div layout="row ">
                     <div flex>
                         <md-input-container>
 
                             <label>CPF</label>
-                            <input ng-model="client.cpf" name="cpf" required md-maxlength=11 md-no-asterisk maxlength="11" />
-
+                            <input ng-model="client.cpf " name="cpf " required md-maxlength=11 md-no-asterisk maxlength="11 " ng-required="true " />
+                            <div ng-messages="clientForm.cpf.$error " ng-if="myForm.$submitted ">
+                                <div ng-message="required ">This is required.</div>
+                            </div>
                         </md-input-container>
                     </div>
                     <div flex>
-                        <md-input-container class="grande">
+                        <md-input-container class="grande ">
 
                             <label>Marital Status</label>
-                            <md-select ng-model="client.maritalstatus" name="maritalstatus" required md-no-asterisk>
-                                <md-option ng-value="item " ng-repeat="item in maritalstatuses " value="{{item.id}}">{{ item.value }}</md-option>
+                            <md-select ng-model="client.maritalstatus " name="maritalstatus " required md-no-asterisk>
+                                <md-option ng-value="item " ng-repeat="item in maritalstatuses " value="{{item.id}} ">{{ item.value }}</md-option>
                             </md-select>
 
                         </md-input-container>
                     </div>
                 </div>
-                <div layout="row">
+                <div layout="row ">
                     <div flex>
-                        <md-input-container class="grande">
+                        <md-input-container class="grande ">
 
                             <label>Name</label>
-                            <input ng-model="client.name" name="name" required md-no-asterisk />
+                            <input ng-model="client.name " name="name " required md-no-asterisk />
 
                         </md-input-container>
                     </div>
 
 
                     <div flex>
-                        <md-input-container class="grande">
+                        <md-input-container class="grande ">
 
                             <label>E-mail</label>
-                            <input ng-model="client.email" name="email" required md-no-asterisk />
+                            <input ng-model="client.email " name="email " required md-no-asterisk />
 
                         </md-input-container>
                     </div>
                 </div>
 
-                <div layout="row">
-                    <div flex="33">
+                <div layout="row ">
+                    <div flex="33 ">
                         <md-input-container>
 
                             <label>Zipcode</label>
@@ -99,8 +120,8 @@
 
                         </md-input-container>
                     </div>
-                    <div flex="66">
-                        <md-input-container class="grande">
+                    <div flex="66 ">
+                        <md-input-container class="grande ">
 
                             <label>Address</label>
                             <input ng-model="client.address1 " name="address1 " required md-no-asterisk />
@@ -108,7 +129,7 @@
                         </md-input-container>
                     </div>
                 </div>
-                <div layout="row">
+                <div layout="row ">
                     <div flex>
                         <md-input-container>
 
@@ -126,7 +147,7 @@
                         </md-input-container>
                     </div>
                     <div flex>
-                        <md-input-container class="grande">
+                        <md-input-container class="grande ">
 
                             <label>Country</label>
                             <input ng-model="client.country " name="country " required md-no-asterisk />
@@ -136,18 +157,28 @@
                 </div>
 
 
-                <div layout="row">
-                <div flex ng-repeat="phone in client.phonenumber">
-                    <md-input-container>
-                        <label>Phone number #{{$index+1}}</label>
-                        <input type="text" ng-model="phone.name" name="" required md-no-asterisk />
-						<md-button ng-show="!$first" class="md-icon-button md-accent md-mini" type="button" ng-click=removePhone()>-</md-button>
-                    </md-input-container>
-					<md-button class="md-icon-button md-accent md-mini" type="button" ng-click=addPhone($event)>
-						+
-					  </md-button>
+                <div layout="row ">
+                    <div flex ng-repeat="phone in client.phonenumber track by $index ">
+                        <md-input-container>
+                            <label>Phone number #{{$index+1}}</label>
+                            <input type="text " ng-model="phone.name " name=" " required md-no-asterisk />
+                            <md-button ng-show="!$first " class="md-icon-button md-accent md-mini " type="button " ng-click=removePhone()>-</md-button>
+                        </md-input-container>
+                        <md-button class="md-icon-button md-accent md-mini " type="button " ng-click=addPhone($event)>
+                            +
+                        </md-button>
+                    </div>
                 </div>
-				</div>
+
+
+
+                <div layout="row " flex layout-align="end center ">
+                    <md-button class="md-raised " ng-click="cancelForm() ">Cancel</md-button>
+                    <md-button class="md-raised md-primary " ng-show="edicao==false " ng-click="submitForm() ">Insert Client!</md-button>
+                    <md-button class="md-raised md-primary " ng-show="edicao==true " ng-click="update() ">Update Client!</md-button>
+                </div>
+
+
 
             </form>
 
@@ -158,15 +189,15 @@
     </div>
 </body>
 
-<script src="js/angular.min.js "></script>
+<script src="scripts/angular/angular.min.js "></script>
+<script src="scripts/angular-animate/angular-animate.min.js "></script>
+<script src="scripts/angular-aria/angular-aria.min.js "></script>
+<script src="scripts/angular-material/angular-material.min.js "></script>
+<script src="scripts/angular-material-icons/angular-material-icons.min.js "></script>
+<script src="scripts/angular-material-data-table/dist/md-data-table.min.js "></script>
 
-<!-- Angular Material requires Angular.js Libraries -->
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js "></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js "></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js "></script>
 
-<!-- Angular Material Library -->
-<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js "></script>
 
 <script src="controllers/controller.js "></script>
 

@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 
 app.use(express.static(__dirname + "/public"));
+app.use('/scripts', express.static(__dirname + '/node_modules/'));
 app.use(bodyParser.json());
 
 var mongodb = require('mongodb');
@@ -93,10 +94,93 @@ app.post('/clients', function (req, res) {
                 console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
             }
             db.close();
+            res.json(result);
         });
 
 
     });
+
+
+});
+
+app.delete('/clients/:id', function (req, res) {
+
+    var id = req.params.id;
+
+    MongoClient.connect(url, function (err, db) {
+
+        db.collection('clients', function (err, clients) {
+            clients.remove({
+                _id: mongodb.ObjectID(id)
+            }, function (err, result) {
+                if (err) {
+                    console.log(err);
+                }
+                db.close();
+                res.json(result);
+            });
+        });
+    });
+
+
+});
+
+app.get('/clients/:id', function (req, res) {
+
+    var id = mongodb.ObjectId(req.params.id);
+
+    var query = {
+        '_id': id
+    };
+
+    console.log("query: ", query);
+
+    MongoClient.connect(url, function (err, db) {
+        db.collection('clients', function (err, clients) {
+            clients.findOne(query, function (err, item) {
+                if (err) {
+                    console.log(err);
+                }
+                console.log("RETRIEVED ITEM: ", item);
+                res.send(item);
+            });
+
+        });
+    });
+
+});
+
+app.put('/clients/:id', function (req, res) {
+
+    var id = mongodb.ObjectId(req.params.id);
+
+    var query = {
+        '_id': id
+    };
+
+    console.log("reqbody", req.body);
+
+    MongoClient.connect(url, function (err, db) {
+        db.collection('clients', function (err, clients) {
+            clients.findAndModify({
+                    query: query,
+                    update: {
+                        $set: {
+                            cpf: req.body.cpf
+                        }
+                    },
+                    new: true
+                },
+                function (err, result) {
+                    res.json(result);
+                }
+            );
+
+        });
+    });
+
+
+
 
 
 });
