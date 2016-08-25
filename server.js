@@ -106,16 +106,22 @@ app.post('/clients', function (req, res) {
 app.delete('/clients/:id', function (req, res) {
 
     var id = req.params.id;
+    console.log("DELETE");
+    console.log("ID", id);
+    console.log("URL", url);
 
     MongoClient.connect(url, function (err, db) {
+        console.log("DB: ", db);
 
         db.collection('clients', function (err, clients) {
+            console.log("CLIENTS:", clients);
             clients.remove({
-                _id: mongodb.ObjectID(id)
+                _id: id
             }, function (err, result) {
                 if (err) {
-                    console.log(err);
-                }
+                    console.log("ERRO DELETE: ", err);
+                } else
+                    console.log("OK DELETE");
                 db.close();
                 res.json(result);
             });
@@ -125,12 +131,16 @@ app.delete('/clients/:id', function (req, res) {
 
 });
 
-app.get('/clients/:id', function (req, res) {
+app.get('/clients/:cpf', function (req, res) {
 
-    var id = mongodb.ObjectId(req.params.id);
+    /*var id = mongodb.ObjectId(req.params.id);
 
     var query = {
         '_id': id
+    };
+*/
+    var query = {
+        'cpf': req.params.cpf
     };
 
     console.log("query: ", query);
@@ -142,6 +152,7 @@ app.get('/clients/:id', function (req, res) {
                     console.log(err);
                 }
                 console.log("RETRIEVED ITEM: ", item);
+                db.close();
                 res.send(item);
             });
 
@@ -152,29 +163,45 @@ app.get('/clients/:id', function (req, res) {
 
 app.put('/clients/:id', function (req, res) {
 
-    var id = mongodb.ObjectId(req.params.id);
-
-    var query = {
-        '_id': id
-    };
-
-    console.log("reqbody", req.body);
+    //var id = mongodb.ObjectId(req.params.id);
+    var id = req.params.id;
+    //var cpf = req.params.cpf;
 
     MongoClient.connect(url, function (err, db) {
         db.collection('clients', function (err, clients) {
+
             clients.findAndModify({
-                    query: query,
-                    update: {
-                        $set: {
-                            cpf: req.body.cpf
-                        }
-                    },
+                    _id: mongodb.ObjectId(_id)
+                }, // query
+    [], // represents a sort order if multiple matches
+                {
+                    $set: {
+                        cpf: req.body.cpf,
+                        name: req.body.name,
+                        email: req.body.email,
+                        maritalstatus: req.body.maritalstatus,
+                        phonenumber: req.body.phonenumber,
+                        zipcode: req.body.zipcode,
+                        address1: req.body.address1,
+                        city: req.body.city,
+                        state: req.body.state,
+                        country: req.body.country
+                    }
+                }, // update statement
+                {
                     new: true
-                },
+                }, // options - new to return the modified document
                 function (err, result) {
+                    if (err) {
+                        console.log("ERRO UPDATE: ", err);
+                    } else
+                        console.log("OK UPDATE");
+                    db.close();
                     res.json(result);
                 }
             );
+
+
 
         });
     });

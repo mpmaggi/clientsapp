@@ -1,4 +1,4 @@
-var clientsApp = angular.module('clientsApp', ['ngMaterial', 'ngAnimate', 'md.data.table', 'ngMessages'])
+var clientsApp = angular.module('clientsApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'md.data.table', 'ngMessages'])
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('blue-grey')
@@ -31,12 +31,6 @@ function ($scope, $http) {
                 value: 'Widowed'
             },
     ];
-        $scope.client = {
-            "maritalstatus": "",
-            "phonenumber": [{
-                id: 'phone0'
-            }]
-        }
 
         $scope.exibirForm = false;
         $scope.edicao = false;
@@ -57,12 +51,18 @@ function ($scope, $http) {
         };
 
         var mostrarForm = function () {
-            $scope.exibirForm = !$scope.exibirForm;
+            $scope.exibirForm = true;
             $scope.textoBotao = $scope.exibirForm ? "-" : "+";
         }
 
         $scope.addNewClient = function () {
             $scope.client = "";
+            $scope.client = {
+                "maritalstatus": ""
+            }
+            $scope.client.phonenumber = [{
+                id: 'phone1'
+        }];
             $scope.exibirForm = !$scope.exibirForm;
             $scope.textoBotao = $scope.exibirForm ? "-" : "+";
         }
@@ -91,18 +91,23 @@ function ($scope, $http) {
         }
 
         $scope.remove = function (id) {
+            console.log("REMOVE: ", '/clients/' + id)   ;
             $http.delete('/clients/' + id).success(function (response) {
                 refresh();
             })
         }
 
-        $scope.edit = function (id) {
-            $http.get('/clients/' + id).success(function (response) {
-                console.log("EDIT:", response);
-                $scope.client = response;
-                mostrarForm();
-                $scope.edicao = true;
-            });
+        $scope.edit = function (cpf) {
+            if (cpf != null) {
+                $http.get('/clients/' + cpf).success(function (response) {
+                    console.log("EDIT:", response);
+                    if (response != "") {
+                        $scope.client = response;
+                        mostrarForm();
+                        $scope.edicao = true;
+                    }
+                });
+            }
         }
 
         $scope.update = function () {

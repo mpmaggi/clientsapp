@@ -55,36 +55,33 @@
                         <td md-cell>{{client.cpf}}</td>
                         <td md-cell>{{client.name}}</td>
                         <td md-cell>{{client.email}}</td>
-                        <td md-cell>{{client.maritalstatus}}</td>
+                        <td md-cell>{{client.maritalstatus.value}}</td>
                         <td md-cell>
-                            <md-button type="button " class="md-raised md-primary " ng-click="edit(client._id)">Edit</md-button>
-                            <md-button type="button " class="md-raised md-warn " ng-click="remove(client._id)">Remove</md-button>
+                            <md-button type="button " class="md-raised md-primary " ng-click="edit(client.cpf)">Edit</md-button>
+                            <md-button type="button " class="md-raised md-warn " ng-click="remove(client._id)">Remove {{client._id}}</md-button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </md-table-container>
 
-        <div id="registerForm " ng-show="exibirForm " class="oculta " layout="column ">
+        <div id="registerForm" ng-show="exibirForm " class="oculta " layout="column ">
 
-            <form name="clientForm " ng-show="exibirForm " class="oculta " layout="column " ng-submit="clientForm.$valid">
+            <form name="clientForm " id="clientForm" ng-show="exibirForm " class="oculta " layout="column " ng-submit="clientForm.$valid && submitForm()" novalidate>
                 <div layout="row ">
                     <div flex>
-                        <md-input-container>
+                        <md-input-container md-is-error="clientForm.cpf.$invalid && (clientForm.$submitted || clientForm.cpf.$dirty)">
 
                             <label>CPF</label>
-                            <input ng-model="client.cpf " name="cpf " required md-maxlength=11 md-no-asterisk maxlength="11 " ng-required="true " />
-                            <div ng-messages="clientForm.cpf.$error " ng-if="myForm.$submitted ">
-                                <div ng-message="required ">This is required.</div>
-                            </div>
+                            <input ng-blur="edit(client.cpf)" ng-model="client.cpf " name="cpf" id="cpf" md-maxlength="11" maxlength="11 " ng-required="true " required ng-maxlength="11" />
                         </md-input-container>
                     </div>
                     <div flex>
                         <md-input-container class="grande ">
 
-                            <label>Marital Status</label>
-                            <md-select ng-model="client.maritalstatus " name="maritalstatus " required md-no-asterisk>
-                                <md-option ng-value="item " ng-repeat="item in maritalstatuses " value="{{item.id}} ">{{ item.value }}</md-option>
+                            <label>Marital Status:</label>
+                            <md-select ng-model="client.maritalstatus " name="maritalstatus " required>
+                                <md-option ng-repeat="item in maritalstatuses" ng-value="item" selected="{{ item.id === client.maritalstatus.id ? 'selected' : '' }}">{{ item.value }}</md-option>
                             </md-select>
 
                         </md-input-container>
@@ -95,7 +92,7 @@
                         <md-input-container class="grande ">
 
                             <label>Name</label>
-                            <input ng-model="client.name " name="name " required md-no-asterisk />
+                            <input ng-model="client.name " name="name " required />
 
                         </md-input-container>
                     </div>
@@ -105,7 +102,7 @@
                         <md-input-container class="grande ">
 
                             <label>E-mail</label>
-                            <input ng-model="client.email " name="email " required md-no-asterisk />
+                            <input ng-model="client.email " name="email " type="email" required />
 
                         </md-input-container>
                     </div>
@@ -116,7 +113,7 @@
                         <md-input-container>
 
                             <label>Zipcode</label>
-                            <input ng-model="client.zipcode " name="zipcode " required md-no-asterisk />
+                            <input ng-model="client.zipcode " name="zipcode " required />
 
                         </md-input-container>
                     </div>
@@ -124,7 +121,7 @@
                         <md-input-container class="grande ">
 
                             <label>Address</label>
-                            <input ng-model="client.address1 " name="address1 " required md-no-asterisk />
+                            <input ng-model="client.address1 " name="address1 " required />
 
                         </md-input-container>
                     </div>
@@ -134,7 +131,7 @@
                         <md-input-container>
 
                             <label>City</label>
-                            <input ng-model="client.city " name="city " required md-no-asterisk />
+                            <input ng-model="client.city " name="city " required />
 
                         </md-input-container>
                     </div>
@@ -142,7 +139,7 @@
                         <md-input-container>
 
                             <label>State</label>
-                            <input ng-model="client.state " name="state " required md-no-asterisk />
+                            <input ng-model="client.state " name="state " required />
 
                         </md-input-container>
                     </div>
@@ -150,7 +147,7 @@
                         <md-input-container class="grande ">
 
                             <label>Country</label>
-                            <input ng-model="client.country " name="country " required md-no-asterisk />
+                            <input ng-model="client.country " name="country " required />
 
                         </md-input-container>
                     </div>
@@ -161,7 +158,7 @@
                     <div flex ng-repeat="phone in client.phonenumber track by $index ">
                         <md-input-container>
                             <label>Phone number #{{$index+1}}</label>
-                            <input type="text " ng-model="phone.name " name=" " required md-no-asterisk />
+                            <input type="text " ng-model="phone.name " name=" " required />
                             <md-button ng-show="!$first " class="md-icon-button md-accent md-mini " type="button " ng-click=removePhone()>-</md-button>
                         </md-input-container>
                         <md-button class="md-icon-button md-accent md-mini " type="button " ng-click=addPhone($event)>
@@ -173,9 +170,9 @@
 
 
                 <div layout="row " flex layout-align="end center ">
-                    <md-button class="md-raised " ng-click="cancelForm() ">Cancel</md-button>
-                    <md-button class="md-raised md-primary " ng-show="edicao==false " ng-click="submitForm() ">Insert Client!</md-button>
-                    <md-button class="md-raised md-primary " ng-show="edicao==true " ng-click="update() ">Update Client!</md-button>
+                    <md-button class="md-raised " ng-click="cancelForm() " type="button">Cancel</md-button>
+                    <md-button class="md-raised md-primary " ng-show="edicao==false" type="submit">Insert Client!</md-button>
+                    <md-button class="md-raised md-primary " ng-show="edicao==true " ng-click="update() " type="submit">Update Client!</md-button>
                 </div>
 
 
