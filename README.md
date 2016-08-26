@@ -63,6 +63,7 @@ Estou ciente de que existe uma melhor abordagem na estrutura do projeto, mas opt
 ## Testes
 Foram realizados testes da API testando os possíveis códigos de retorno HTTP que foram tratados.
 Não foram utilizados mocks/stubs, embora seria a maneira mais correta de ser feitos os testes.
+
 ![Testes realizados](/screenshots/test.png?raw=true "Testes realizados")
 
 Libs utilizadas: Mocha, Chai e Request
