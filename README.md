@@ -63,7 +63,14 @@ Estou ciente de que existe uma melhor abordagem na estrutura do projeto, mas opt
 ## Testes
 Foram realizados testes da API testando os possíveis códigos de retorno HTTP que foram tratados.
 ![Testes realizados](/screenshots/test.png?raw=true "Testes realizados")
+
 Libs utilizadas: Mocha, Chai e Request
+> Comandos para executar:
+> * npm test
+
+> ou
+
+> * ./node_modules/.bin/mocha --reporter spec
 
 ## Principais arquivos
 ### /
@@ -80,6 +87,9 @@ Libs utilizadas: Mocha, Chai e Request
 * clients.js
 > Retorno das transações HTTP referentes à entidade Client.
 
+### /test
+* server.js
+> Arquivo com os testes da API
 
 ### /public
 
