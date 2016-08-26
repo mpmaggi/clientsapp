@@ -63,6 +63,7 @@ Estou ciente de que existe uma melhor abordagem na estrutura do projeto, mas opt
 ## Testes
 Foram realizados testes da API testando os possíveis códigos de retorno HTTP que foram tratados.
 ![Testes realizados](/screenshots/test.png?raw=true "Testes realizados")
+Libs utilizadas: Mocha, Chai e Request
 
 ## Principais arquivos
 ### /
@@ -109,6 +110,9 @@ Tela de edição de registro. Acionada pelo botão Edit ou ao acessar o botão "
 ### Pacotes utilizados além do MEAN Stack
 * Angular Material Design
 * Angular Material Data Table
+* Mocha
+* Chai
+* Request
 
 ###Versões utilizadas
 **MongoDB:** 3.2.9
