@@ -5,27 +5,27 @@ Estou ciente de que existe uma melhor abordagem na estrutura do projeto, mas opt
 
 
 ##Instruções
-1.	Download e Instalação NodeJS.
+1. Download e Instalação NodeJS.
 
 > https://nodejs.org 
 
-2.	Download e Instalação MongoDB.
+2. Download e Instalação MongoDB.
 
 > https://www.mongodb.com/
 
-3.	Download aplicação e extração em um diretório local.
+3. Download aplicação e extração em um diretório local.
 
 >https://github.com/mpmaggi/clientsapp/archive/master.zip
 
-4.	Instalar dependências.
+4. Instalar dependências.
 
 >No bash, executar "npm install" no diretório local onde a aplicação foi extraída para instalar as dependências do projeto.
 
-5.	Iniciar server
+5. Iniciar server
 
 >Após ter as dependências instaladas, executar node server para iniciar o servidor HTTP. A porta utilizada é a 3000.
 
-6.	Abrir o Browser.
+6. Abrir o Browser.
 
 >http://localhost:3000
 
