@@ -8,7 +8,6 @@ app.use(express.static(__dirname + "/public"));
 app.use('/scripts', express.static(__dirname + '/node_modules/'));
 app.use(bodyParser.json());
 
-Client = require('./clients.js');
 var routes = require('./routes');
 app.use('/', routes);
 

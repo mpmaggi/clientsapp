@@ -1,109 +1,130 @@
+var Client = require('./clients.js');
+
 module.exports = (function () {
-  'use strict';
-  var router = require('express').Router();
+    'use strict';
+    var router = require('express').Router();
 
-  /*
-  router.get('/', function (req, res) {
-    res.json({ 'foo': 'bar' });
-  });
-  */
+    router.get('/clients', function (req, res) {
 
+        Client.GetAll(function (err, clients) {
+            if (err) {
+                return res.status(500).send(err);
+            }
 
+            if (clients && clients.length > 0) {
+                res.json(clients);
 
-  router.get('/clients', function (req, res) {
+            } else {
+                res.status(204).send();
+            }
+        });
 
-    Client.GetAll(function (err, clients) {
-      res.json(clients);
     });
 
-  });
+    router.get('/clients/:cpf', function (req, res) {
 
-  router.get('/clients/:cpf', function (req, res) {
+        Client.GetByCpf(req.params.cpf, function (err, client) {
+            if (err) {
+                return res.status(500).send(err);
+            }
 
-    Client.GetByCpf(req.params.cpf, function (err, client) {
-      res.json(client); //res.send(item)
+            if (client) {
+                res.json(client);
+
+            } else {
+                res.status(204).send();
+            }
+        });
+
     });
 
-  });
+    router.post('/clients', function (req, res) {
 
-  router.post('/clients', function (req, res) {
+        Client.data = req.body;
 
-    Client.data = req.body;
-    Client.Save(function (err, result) {
-      res.json(result);
+        Client.GetByCpf(req.body.cpf, function (err, client) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            if (client) {
+                res.status(409).send();
+
+            } else {
+
+                Client.Save(function (err, result) {
+                    if (err) {
+                        return res.status(500).send(err);
+                    }
+
+                    res.status(201).send();
+                });
+            }
+        });
     });
 
-  });
+    router.delete('/clients/:cpf', function (req, res) {
 
-  router.delete('/clients/:id', function (req, res) {
+        Client.GetByCpf(req.params.cpf, function (err, client) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            console.log("CPF: ", req.params.cpf);
+            console.log("CLIENT: ", client);
 
-    Client.Delete(req.params.id, function (err, result) {
-      res.json(result);
+            if (client) {
+                Client.Delete(req.params.cpf, function (err, result) {
+                    if (err) {
+                        return res.status(500).send(err);
+                    }
+
+                    res.json(result);
+                });
+
+            } else {
+                res.status(404).send();
+            }
+
+        });
+
     });
 
-  });
 
+    router.put('/clients/:cpf', function (req, res) {
 
-  router.put('/clients/:id', function (req, res) {
+        Client.GetByCpf(req.params.cpf, function (err, client) {
+            if (err) {
+                return res.status(500).send(err);
+            }
 
-    Client.data = {
-      cpf: req.body.cpf,
-      name: req.body.name,
-      email: req.body.email,
-      maritalstatus: req.body.maritalstatus,
-      phonenumber: req.body.phonenumber,
-      zipcode: req.body.zipcode,
-      address1: req.body.address1,
-      city: req.body.city,
-      state: req.body.state,
-      country: req.body.country
-    };
+            if (client) {
 
-    Client.Update(req.params.id, function (err, result) {
-      res.json(result);
+                Client.data = {
+                    cpf: req.body.cpf,
+                    name: req.body.name,
+                    email: req.body.email,
+                    maritalstatus: req.body.maritalstatus,
+                    phonenumber: req.body.phonenumber,
+                    zipcode: req.body.zipcode,
+                    address1: req.body.address1,
+                    city: req.body.city,
+                    state: req.body.state,
+                    country: req.body.country
+                };
+
+                Client.Update(req.params.cpf, function (err, result) {
+                    if (err) {
+                        return res.status(500).send(err);
+                    }
+
+                    res.json(result);
+                });
+
+            } else {
+                res.status(404).send();
+            }
+        });
     });
 
-    /*
-      var id = req.params.id;
-  
-      var set = {
-              cpf: req.body.cpf,
-        name: req.body.name,
-        email: req.body.email,
-        maritalstatus: req.body.maritalstatus,
-        phonenumber: req.body.phonenumber,
-        zipcode: req.body.zipcode,
-        address1: req.body.address1,
-        city: req.body.city,
-        state: req.body.state,
-        country: req.body.country
-          };
-  
-      MongoClient.connect(url, function (err, db) {
-          db.collection('clients', function (err, clients) {
-  
-        clients.update({ _id: mongodb.ObjectId(id) },{$set: set}, function(err, result){
-          if (err)
-            console.warn(err.message);
-          else {
-            console.log("RESULTADO UPDATE: ", result);
-            res.json(result);
-  
-          }
-                                });
-      
-  
-  
-          });
-      });
-  
-  
-  
-      */
-
-  });
-
-
-
-  return router;
+    return router;
 })();

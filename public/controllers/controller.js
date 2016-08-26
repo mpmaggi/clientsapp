@@ -83,8 +83,8 @@ function ($scope, $http) {
             refresh();
         }
 
-        $scope.remove = function (id) {
-            $http.delete('/clients/' + id).success(function (response) {
+        $scope.remove = function (cpf) {
+            $http.delete('/clients/' + cpf).success(function (response) {
                 refresh();
             })
         }
@@ -92,7 +92,7 @@ function ($scope, $http) {
         $scope.edit = function (cpf) {
             if (cpf != null) {
                 $http.get('/clients/' + cpf).success(function (response) {
-                    if (response != null) {
+                    if (response != "") {
                         $scope.client = response;
                         mostrarForm();
                         $scope.edicao = true;
@@ -102,8 +102,10 @@ function ($scope, $http) {
         }
 
         $scope.update = function () {
-            $http.put('/clients/' + $scope.client._id, $scope.client).success(function (response) {
+            $http.put('/clients/' + $scope.client.cpf, $scope.client).success(function (response) {
                 refresh();
             });
         }
+
+
 }]);

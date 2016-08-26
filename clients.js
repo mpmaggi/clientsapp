@@ -31,7 +31,6 @@ Client.GetByCpf = function (cpf, callback) {
     });
 }
 
-
 Client.GetAll = function (callback) {
 
     mongodb.connect(function () {
@@ -49,7 +48,6 @@ Client.GetAll = function (callback) {
     });
 
 }
-
 
 Client.Save = function (callback) {
     var data = this.data;
@@ -72,14 +70,14 @@ Client.Save = function (callback) {
     }
 }
 
-Client.Delete = function (id, callback) {
+Client.Delete = function (cpf, callback) {
     var data = this.data;
 
     mongodb.connect(function () {
         mongodb.db()
             .collection('clients')
             .remove({
-                _id: require("mongodb").ObjectId(id)
+                cpf: cpf
             }, function (err, result) {
                 if (err) {
                     return callback(err);
@@ -93,14 +91,14 @@ Client.Delete = function (id, callback) {
 }
 
 
-Client.Update = function (id, callback) {
+Client.Update = function (cpf, callback) {
     var data = this.data;
 
     mongodb.connect(function () {
         mongodb.db()
             .collection('clients')
             .update({
-                    _id: require('mongodb').ObjectId(id)
+                    cpf: cpf
                 }, {
                     $set: data
                 },
