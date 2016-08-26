@@ -60,6 +60,9 @@ Estou ciente de que existe uma melhor abordagem na estrutura do projeto, mas opt
 
 >**Ação:** Remove o registro do client que tenha o cpf recebido no parâmetro, caso ele exista.
 
+## Testes
+Foram realizados testes da API testando os possíveis códigos de retorno HTTP que foram tratados.
+![Testes realizados](/screenshots/test.png?raw=true "Testes realizados")
 
 ## Principais arquivos
 ### /
