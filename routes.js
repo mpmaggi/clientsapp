@@ -12,6 +12,7 @@ module.exports = (function () {
             }
 
             if (clients && clients.length > 0) {
+                res.setHeader('Content-Type', 'application/json');
                 res.json(clients);
 
             } else {
@@ -29,6 +30,7 @@ module.exports = (function () {
             }
 
             if (client) {
+                res.setHeader('Content-Type', 'application/json');
                 res.json(client);
 
             } else {
@@ -39,9 +41,7 @@ module.exports = (function () {
     });
 
     router.post('/clients', function (req, res) {
-
         Client.data = req.body;
-
         Client.GetByCpf(req.body.cpf, function (err, client) {
             if (err) {
                 return res.status(500).send(err);
@@ -69,8 +69,6 @@ module.exports = (function () {
             if (err) {
                 return res.status(500).send(err);
             }
-            console.log("CPF: ", req.params.cpf);
-            console.log("CLIENT: ", client);
 
             if (client) {
                 Client.Delete(req.params.cpf, function (err, result) {

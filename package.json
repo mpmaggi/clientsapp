@@ -1,32 +1,38 @@
 {
-  "name": "master",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "dependencies": {
-    "angular": "^1.5.8",
-    "angular-animate": "^1.5.8",
-    "angular-aria": "^1.5.8",
-    "angular-material": "^1.1.0",
-    "angular-material-data-table": "^0.10.9",
-    "angular-material-icons": "^0.7.1",
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "mongodb": "^2.2.8"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mpmaggi/clientsapp.git"
-  },
-  "author": "Marcus Maggi",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mpmaggi/clientsapp/issues"
-  },
-  "homepage": "https://github.com/mpmaggi/clientsapp#readme"
+    "name": "master",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "test": "./node_modules/.bin/mocha --reporter spec"
+    },
+    "dependencies": {
+        "angular": "^1.5.8",
+        "angular-animate": "^1.5.8",
+        "angular-aria": "^1.5.8",
+        "angular-material": "^1.1.0",
+        "angular-material-data-table": "^0.10.9",
+        "angular-material-icons": "^0.7.1",
+        "body-parser": "^1.15.2",
+        "chai": "^3.5.0",
+        "express": "^4.14.0",
+        "mocha": "^3.0.2",
+        "mongodb": "^2.2.8",
+        "request": "^2.74.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mpmaggi/clientsapp.git"
+    },
+    "author": "Marcus Maggi",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mpmaggi/clientsapp/issues"
+    },
+    "homepage": "https://github.com/mpmaggi/clientsapp#readme"
 }
