@@ -35,11 +35,7 @@ function ($scope, $http) {
         $scope.exibirForm = false;
         $scope.edicao = false;
         $scope.textoBotao = "+";
-        /*        $scope.client.phonenumber = [{
-                    id: 'phone1'
-                }];*/
 
-        /* CONTROLE CAMPO DE TELEFONE */
         $scope.addPhone = function () {
             $scope.client.phonenumber.push({
                 'id': 'phone' + ($scope.client.phonenumber.length + 1)
@@ -68,16 +64,13 @@ function ($scope, $http) {
         }
 
         $scope.submitForm = function () {
-            console.log("submitForm");
             $http.post('/clients', $scope.client).success(function (response) {
-                console.log("POST!");
                 refresh();
             });
         }
 
         var refresh = function () {
             $http.get('/clients').success(function (response) {
-                console.log("SUBMIT OK!");
                 $scope.clientList = response;
                 $scope.client = "";
                 $scope.exibirForm = false;
@@ -91,7 +84,6 @@ function ($scope, $http) {
         }
 
         $scope.remove = function (id) {
-            console.log("REMOVE: ", '/clients/' + id)   ;
             $http.delete('/clients/' + id).success(function (response) {
                 refresh();
             })
@@ -100,8 +92,7 @@ function ($scope, $http) {
         $scope.edit = function (cpf) {
             if (cpf != null) {
                 $http.get('/clients/' + cpf).success(function (response) {
-                    console.log("EDIT:", response);
-                    if (response != "") {
+                    if (response != null) {
                         $scope.client = response;
                         mostrarForm();
                         $scope.edicao = true;
@@ -111,8 +102,6 @@ function ($scope, $http) {
         }
 
         $scope.update = function () {
-            console.log("UPDATE", $scope.client);
-            console.log($scope.client._id);
             $http.put('/clients/' + $scope.client._id, $scope.client).success(function (response) {
                 refresh();
             });
